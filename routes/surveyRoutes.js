@@ -3,8 +3,15 @@ const mongoose = require("mongoose");
 const router = express.Router();
 const requireLogin = require("../middlewares/requireLogin");
 const Survey = mongoose.model("surveys");
-router.get("/api/surveys", function (req, res) {
-  res.send("got surveys", res);
+
+router.get("/api/surveys", async (req, res) => {
+  const filter = req.query.userId ? { _user: req.query.userId } : {};
+  const surveys = await Survey.find(filter);
+  // .select({
+  //   recipients: false,
+  // });
+
+  res.send(surveys);
 });
 
 router.post("/api/surveys", requireLogin, async (req, res) => {
@@ -13,7 +20,9 @@ router.post("/api/surveys", requireLogin, async (req, res) => {
   const survey = new Survey({
     subject,
     body,
-    recipients: recipients.split(",").map((email) => ({ email: email.trim() })),
+    recipients: recipients
+      ?.split(",")
+      .map((email) => ({ email: email.trim() })),
     _user: req.user.id,
     dateSent: Date.now(),
   });
@@ -28,5 +37,14 @@ router.post("/api/surveys", requireLogin, async (req, res) => {
   } catch (err) {
     res.status(422).send(err);
   }
+});
+router.delete("/api/surveys/:id", requireLogin, async (req, res) => {
+  Survey.findOneAndDelete({ _id: req.params.id }, function (err) {
+    if (err) {
+      res.status(422).send(err);
+    } else {
+      res.send("ok");
+    }
+  });
 });
 module.exports = router;
