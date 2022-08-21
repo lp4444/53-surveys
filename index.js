@@ -32,7 +32,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// app.use("/", auth).use("/", survey);
+app.use("/", auth);
+// .use("/", survey);
 app.get("/", (req, res) => {
   res.send("Hello World9!");
 });
