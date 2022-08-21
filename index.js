@@ -1,24 +1,24 @@
 const express = require("express");
-// const mongoose = require("mongoose");
+const mongoose = require("mongoose"); //t
 const cookieSession = require("cookie-session");
 
 const passport = require("passport");
 
 const keys = require("./config/keys");
-// require("./models/User");
-// require("./models/Survey");
-// require("./passport");
+// require("./models/User"); //t
+// require("./models/Survey"); //t
+// require("./passport"); //t
 
 const auth = require("./routes/authRoutes");
-// const survey = require("./routes/surveyRoutes");
+// const survey = require("./routes/surveyRoutes");//t
 
-// mongoose.Promise = global.Promise;
-// mongoose
-//   .connect(keys.mongoURI, {
-//     useNewUrlParser: true,
-//   })
-//   .then(() => console.log("Database Connected"))
-//   .catch((err) => console.log("ee", err, "eee"));
+mongoose.Promise = global.Promise; //t
+mongoose
+  .connect(keys.mongoURI, {
+    useNewUrlParser: true,
+  })
+  .then(() => console.log("Database Connected"))
+  .catch((err) => console.log("ee", err, "eee")); //t
 
 const app = express();
 app.use(express.json());
