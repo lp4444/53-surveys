@@ -1,5 +1,5 @@
 const express = require("express");
-// const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 // const cookieSession = require("cookie-session");
 
 // const passport = require("passport");
@@ -12,7 +12,7 @@ const express = require("express");
 // const auth = require("./routes/authRoutes");
 // const survey = require("./routes/surveyRoutes");
 
-// mongoose.Promise = global.Promise;
+mongoose.Promise = global.Promise;
 // mongoose
 //   .connect(keys.mongoURI, {
 //     useNewUrlParser: true,
