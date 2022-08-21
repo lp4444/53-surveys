@@ -33,12 +33,12 @@ const app = express();
 // app.use(passport.session());
 
 // app.use("/", auth).use("/", survey);
-app.get("/", (req, res) => {
-  res.send("Hello World9!");
-});
-app.get("/we", (req, res) => {
-  res.send("Hello WorldWEEE!");
-});
+// app.get("/", (req, res) => {
+//   res.send("Hello World9!");
+// });
+// app.get("/we", (req, res) => {
+//   res.send("Hello WorldWEEE!");
+// });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
