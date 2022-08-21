@@ -1,24 +1,24 @@
 const express = require("express");
-const mongoose = require("mongoose"); //t
+const mongoose = require("mongoose");
 const cookieSession = require("cookie-session");
 
 const passport = require("passport");
 
 const keys = require("./config/keys");
-require("./models/User"); //t
-require("./models/Survey"); //t
-require("./passport"); //t
+require("./models/User");
+require("./models/Survey");
+// require("./passport");
 
 const auth = require("./routes/authRoutes");
-const survey = require("./routes/surveyRoutes"); //t
+// const survey = require("./routes/surveyRoutes");
 
-mongoose.Promise = global.Promise; //t
+mongoose.Promise = global.Promise;
 mongoose
   .connect(keys.mongoURI, {
     useNewUrlParser: true,
   })
   .then(() => console.log("Database Connected"))
-  .catch((err) => console.log("ee", err, "eee")); //t
+  .catch((err) => console.log("ee", err, "eee"));
 
 const app = express();
 app.use(express.json());
@@ -29,8 +29,8 @@ app.use(
   })
 );
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 app.use("/", auth).use("/", survey);
 app.get("/", (req, res) => {
