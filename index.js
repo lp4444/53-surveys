@@ -7,7 +7,7 @@ const passport = require("passport");
 const keys = require("./config/keys");
 // require("./models/User");
 // require("./models/Survey");
-// require("./passport");
+require("./passport");
 
 // const auth = require("./routes/authRoutes");
 // const survey = require("./routes/surveyRoutes");
