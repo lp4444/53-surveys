@@ -1,5 +1,5 @@
 const express = require("express");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 // const cookieSession = require("cookie-session");
 
 // const passport = require("passport");
@@ -12,7 +12,7 @@ const mongoose = require("mongoose");
 // const auth = require("./routes/authRoutes");
 // const survey = require("./routes/surveyRoutes");
 
-mongoose.Promise = global.Promise;
+// mongoose.Promise = global.Promise;
 // mongoose
 //   .connect(keys.mongoURI, {
 //     useNewUrlParser: true,
@@ -21,7 +21,7 @@ mongoose.Promise = global.Promise;
 //   .catch((err) => console.log("ee", err, "eee"));
 
 const app = express();
-// app.use(express.json());
+app.use(express.json());
 // app.use(
 //   cookieSession({
 //     maxAge: 30 * 24 * 60 * 60 * 1000,
