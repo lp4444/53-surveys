@@ -12,7 +12,7 @@ const keys = require("./config/keys");
 const auth = require("./routes/authRoutes");
 // const survey = require("./routes/surveyRoutes");//t
 
-// mongoose.Promise = global.Promise; //t
+mongoose.Promise = global.Promise; //t
 mongoose
   .connect(keys.mongoURI, {
     useNewUrlParser: true,
