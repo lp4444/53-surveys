@@ -1,6 +1,6 @@
 const express = require("express");
 // const mongoose = require("mongoose"); //t
-// const cookieSession = require("cookie-session");
+const cookieSession = require("cookie-session");
 
 const passport = require("passport");
 
@@ -22,15 +22,15 @@ const auth = require("./routes/authRoutes");
 
 const app = express();
 app.use(express.json());
-// app.use(
-//   cookieSession({
-//     maxAge: 30 * 24 * 60 * 60 * 1000,
-//     keys: [keys.cookieKey],
-//   })
-// );
+app.use(
+  cookieSession({
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    keys: [keys.cookieKey],
+  })
+);
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 app.use("/", auth);
 // .use("/", survey);
