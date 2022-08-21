@@ -34,7 +34,7 @@ const app = express();
 
 // app.use("/", auth).use("/", survey);
 app.get("/", (req, res) => {
-  res.send("Hello World9!", process.env.GOOGLE_CLIENT_ID);
+  res.send("Hello World9!");
 });
 
 const PORT = process.env.PORT || 5000;
