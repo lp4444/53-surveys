@@ -33,7 +33,7 @@ const app = express();
 // app.use(passport.session());
 
 // app.use("/", auth).use("/", survey);
-app.get("/", (req, res) => {
+app.get("/we", (req, res) => {
   res.send("Hello World9!");
 });
 // app.get("/we", (req, res) => {
