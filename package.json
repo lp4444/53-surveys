@@ -8,7 +8,7 @@
     "npm": "5.0.2"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "node index",
     "server": "nodemon index.js",
     "client": "npm run start --prefix client2",
     "dev": "concurrently \"npm run server\" \"npm run client\""
