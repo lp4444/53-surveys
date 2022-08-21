@@ -12,13 +12,13 @@ const keys = require("./config/keys");
 const auth = require("./routes/authRoutes");
 // const survey = require("./routes/surveyRoutes");//t
 
-// mongoose.Promise = global.Promise; //t
-// mongoose
-//   .connect(keys.mongoURI, {
-//     useNewUrlParser: true,
-//   })
-//   .then(() => console.log("Database Connected"))
-//   .catch((err) => console.log("ee", err, "eee")); //t
+mongoose.Promise = global.Promise; //t
+mongoose
+  .connect(keys.mongoURI, {
+    useNewUrlParser: true,
+  })
+  .then(() => console.log("Database Connected"))
+  .catch((err) => console.log("ee", err, "eee")); //t
 
 const app = express();
 app.use(express.json());
