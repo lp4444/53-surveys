@@ -2,12 +2,12 @@ const express = require("express");
 // const mongoose = require("mongoose");
 const cookieSession = require("cookie-session");
 
-// const passport = require("passport");
+const passport = require("passport");
 
 const keys = require("./config/keys");
 // require("./models/User");
 // require("./models/Survey");
-// require("./passport");
+require("./passport");
 
 // const auth = require("./routes/authRoutes");
 // const survey = require("./routes/surveyRoutes");
@@ -29,8 +29,8 @@ app.use(
   })
 );
 
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
 // app.use("/", auth).use("/", survey);
 app.get("/", (req, res) => {
