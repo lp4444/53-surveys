@@ -5,12 +5,12 @@ const cookieSession = require("cookie-session");
 const passport = require("passport");
 
 const keys = require("./config/keys");
-// require("./models/User"); //t
-// require("./models/Survey"); //t
-// require("./passport"); //t
+require("./models/User"); //t
+require("./models/Survey"); //t
+require("./passport"); //t
 
 const auth = require("./routes/authRoutes");
-// const survey = require("./routes/surveyRoutes");//t
+const survey = require("./routes/surveyRoutes"); //t
 
 mongoose.Promise = global.Promise; //t
 mongoose
@@ -29,11 +29,10 @@ app.use(
   })
 );
 
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.use("/", auth);
-// .use("/", survey);
+app.use("/", auth).use("/", survey);
 app.get("/", (req, res) => {
   res.send("Hello World9!");
 });
