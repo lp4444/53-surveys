@@ -10,7 +10,7 @@ const keys = require("./config/keys");
 // require("./passport");
 
 const auth = require("./routes/authRoutes");
-const survey = require("./routes/surveyRoutes");
+// const survey = require("./routes/surveyRoutes");
 
 // mongoose.Promise = global.Promise;
 // mongoose
