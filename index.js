@@ -21,7 +21,7 @@ const express = require("express");
 //   .catch((err) => console.log("ee", err, "eee"));
 
 const app = express();
-app.use(express.json());
+// app.use(express.json());
 // app.use(
 //   cookieSession({
 //     maxAge: 30 * 24 * 60 * 60 * 1000,
@@ -34,7 +34,7 @@ app.use(express.json());
 
 // app.use("/", auth).use("/", survey);
 app.get("/", (req, res) => {
-  res.send("Hello World6!");
+  res.send("Hello World9!", process.env.GOOGLE_CLIENT_ID);
 });
 
 const PORT = process.env.PORT || 5000;
