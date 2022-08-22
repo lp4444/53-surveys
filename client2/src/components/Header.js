@@ -69,7 +69,7 @@ const Header = ({ auth }) => {
               textDecoration: "none",
             }}
           >
-            LOGO
+            LOGO1
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -131,7 +131,7 @@ const Header = ({ auth }) => {
               textDecoration: "none",
             }}
           >
-            LOGO
+            LOGO1
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map(
