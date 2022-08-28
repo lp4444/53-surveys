@@ -2,7 +2,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
 const requireLogin = require("../middlewares/requireLogin");
+const Mailer = require("../mail/Mailer");
 const Survey = mongoose.model("surveys");
+
+const mailTemplate = require("../mail/mailTemplate");
 
 router.get("/api/surveys", async (req, res) => {
   const filter = req.query.userId ? { _user: req.query.userId } : {};
@@ -12,6 +15,10 @@ router.get("/api/surveys", async (req, res) => {
   // });
 
   res.send(surveys);
+});
+
+router.get("/api/surveys/:surveyId/:choice", (req, res) => {
+  res.send("Thanks for voting!");
 });
 
 router.post("/api/surveys", requireLogin, async (req, res) => {
@@ -28,10 +35,11 @@ router.post("/api/surveys", requireLogin, async (req, res) => {
   });
 
   // Great place to send an email!
-  // const mailer = new Mailer(survey, surveyTemplate(survey));
+  const mailer = new Mailer(survey, mailTemplate(survey));
+  // console.log(mailer, "mailerrrrrrrrr");
 
   try {
-    // await mailer.send();
+    await mailer.send();
     await survey.save();
     res.send("ok");
   } catch (err) {

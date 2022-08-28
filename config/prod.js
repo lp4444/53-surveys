@@ -3,4 +3,7 @@ module.exports = {
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRETE,
   mongoURI: process.env.MONGO_URI,
   cookieKey: process.env.COOKIE_KEY,
+  mailgunKey: process.env.MAILGUN_KEY,
+  mailgunDomain: process.env.MAILGUN_DOMAIN,
+  redirectDomain: process.env.REDIRECT_DOMAIN,
 };
