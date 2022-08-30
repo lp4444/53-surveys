@@ -13,8 +13,6 @@ class Mailer {
       to: this.formatAddresses(recipients),
       subject: subject,
       html: content,
-      // subject: "Hello World!!!",
-      // text: "Testing some Mailgun awesomeness!",
     };
   }
 

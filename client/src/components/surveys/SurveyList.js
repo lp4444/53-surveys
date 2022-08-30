@@ -72,6 +72,7 @@ const SurveyList = ({ fetchSurveys, surveys, auth }) => {
   const deleteSurvey = async (survey) => {
     const { _user, _id } = survey;
     await axios.delete(`/api/surveys/${_id}`);
+    //await axios.post("api/surveys/webhooks");
   };
 
   const [expanded, setExpanded] = React.useState(false);
@@ -156,8 +157,8 @@ const SurveyList = ({ fetchSurveys, surveys, auth }) => {
         <DialogTitle>Vote</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally.
+            To vote to this survey, please enter your email address here. We
+            will send a voting email to you.
           </DialogContentText>
           <TextField
             autoFocus
@@ -171,7 +172,7 @@ const SurveyList = ({ fetchSurveys, surveys, auth }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Subscribe</Button>
+          <Button onClick={handleClose}>Submit</Button>
         </DialogActions>
       </Dialog>
     </>
