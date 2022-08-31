@@ -39,25 +39,46 @@ router.post("/api/surveys", requireLogin, async (req, res) => {
   const mailer = new Mailer(survey, mailTemplate(survey));
 
   try {
-    await mailer.send();
+    if (recipients) await mailer.send();
     await survey.save();
     res.send("ok");
   } catch (err) {
     res.status(422).send(err);
   }
 });
-router.post("/api/surveys/vote", async (req, res) => {});
+router.post("/api/surveys/vote", async (req, res) => {
+  const { email, curSurvey: surveyId } = req.body;
+  Survey.updateOne(
+    {
+      _id: surveyId,
+      "recipients.email": { $ne: email },
+    },
+    {
+      $push: { recipients: { email: email, responded: false } },
+    }
+  ).exec();
+
+  Survey.findById(surveyId, async function (err, docs) {
+    if (err) {
+      res.status(422).send(err);
+    } else {
+      console.log("Result : ", docs);
+      const mailer = new Mailer(docs, mailTemplate(docs), email);
+      if (email) await mailer.send();
+      res.send("ok");
+    }
+  });
+});
 
 router.post(
   "/api/surveys/webhooks",
   express.urlencoded({ extended: false }),
   (req, res) => {
     const p = new Path("/api/surveys/:surveyId/:choice");
-    const { recipient: email, url, event } = req.body;
+    const { recipient: email, url, event } = req.body["event-data"];
     const match = p.test(new URL(url).pathname);
 
     if (match && event === "clicked") {
-      //false &&
       Survey.updateOne(
         {
           _id: match.surveyId,
@@ -72,8 +93,7 @@ router.post(
         }
       ).exec();
     }
-    console.log("gggg");
-    res.send({});
+    res.send(req.body);
   }
 );
 router.delete("/api/surveys/:id", requireLogin, async (req, res) => {

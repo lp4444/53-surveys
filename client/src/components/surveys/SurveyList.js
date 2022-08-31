@@ -43,8 +43,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { reduxForm, Field } from "redux-form";
 import * as actions from "../../actions";
-
+import { flash } from "react-universal-flash";
 import dayjs from "dayjs";
 import axios from "axios";
 
@@ -63,29 +64,69 @@ import axios from "axios";
 //   })
 // }));
 
-const SurveyList = ({ fetchSurveys, surveys, auth }) => {
+const TextFieldAdapter = ({ input, meta, ...rest }) => (
+  <TextField
+    {...input}
+    {...rest}
+    error={meta.touched && !!meta.error}
+    helperText={meta.touched ? meta.error : ""}
+    onChange={(event, value) => input.onChange(event.target.value)}
+  />
+);
+
+const SurveyList = ({
+  fetchSurveys,
+  surveys,
+  auth,
+  form,
+  handleSubmit,
+  submitting,
+}) => {
   const { userId } = useParams(); //userId
+
+  const [bin, setBin] = React.useState(false);
 
   async function fetchData() {
     await fetchSurveys(userId);
   }
   const deleteSurvey = async (survey) => {
     const { _user, _id } = survey;
-    await axios.delete(`/api/surveys/${_id}`);
-    //await axios.post("api/surveys/webhooks");
+    try {
+      const res = await axios.delete(`/api/surveys/${_id}`);
+      flash("delete done", 2400, "success");
+      setBin(!bin);
+    } catch (e) {
+      flash(e, 2400, "failure");
+    }
   };
 
   const [expanded, setExpanded] = React.useState(false);
   const [open, setOpen] = React.useState(false);
-
+  const [curSurvey, setCurSurvey] = React.useState("");
   const handleClickOpen = (survey) => {
     const { _user, _id } = survey;
+    setCurSurvey(_id);
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
-
+  const onEmailSubmit = async () => {
+    setOpen(false);
+    try {
+      if (form.emailForm.values) {
+        await axios.post("/api/surveys/vote", {
+          curSurvey,
+          ...form.emailForm.values,
+        });
+        flash("success submit", 2400, "success");
+      }
+    } catch (e) {
+      flash(" failure submit", 2400, "error");
+    } finally {
+    }
+    console.log(form.emailForm.values);
+  };
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -93,7 +134,7 @@ const SurveyList = ({ fetchSurveys, surveys, auth }) => {
   React.useEffect(() => {
     fetchData();
     console.log(auth);
-  }, [userId]);
+  }, [userId, bin]);
 
   return (
     <>
@@ -154,32 +195,53 @@ const SurveyList = ({ fetchSurveys, surveys, auth }) => {
           })}
       </div>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Vote</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To vote to this survey, please enter your email address here. We
-            will send a voting email to you.
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Submit</Button>
-        </DialogActions>
+        <form onSubmit={handleSubmit(onEmailSubmit)}>
+          <DialogTitle>Vote</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              To vote to this survey, please enter your email address here. We
+              will send a voting email to you.
+            </DialogContentText>
+            {/* <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Email Address"
+              type="email"
+              fullWidth
+              variant="standard"
+            /> */}
+            <Field
+              autoFocus
+              name="email"
+              label="Email Address"
+              variant="standard"
+              margin="normal"
+              type="email"
+              fullWidth
+              component={TextFieldAdapter}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} disabled={submitting}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={submitting}>
+              Submit
+            </Button>
+          </DialogActions>
+        </form>
       </Dialog>
     </>
   );
 };
-function mapStateToProps({ surveys, auth }) {
-  return { surveys, auth };
+function mapStateToProps({ surveys, auth, form }) {
+  return { surveys, auth, form };
 }
 
-export default connect(mapStateToProps, actions)(SurveyList);
+// export default connect(mapStateToProps, actions)(SurveyList);
+
+export default reduxForm({
+  form: "emailForm",
+  destroyOnUnmount: false,
+})(connect(mapStateToProps, actions)(SurveyList));

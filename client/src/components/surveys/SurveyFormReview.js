@@ -8,13 +8,17 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
-
+import { flash } from "react-universal-flash";
 import axios from "axios";
 
 const sendSurvey = async (values, navigate) => {
-  const res = await axios.post("/api/surveys", values);
-  console.log(res);
-  navigate("/surveys");
+  try {
+    await axios.post("/api/surveys", values);
+    flash("success add", 2400, "success");
+  } catch (e) {
+  } finally {
+    navigate("/surveys");
+  }
 };
 const SurveyFormReview = ({ formValues, onCancel }) => {
   let navigate = useNavigate();

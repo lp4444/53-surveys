@@ -7,17 +7,17 @@ const mailgun = require("mailgun-js")({
 });
 
 class Mailer {
-  constructor({ subject, recipients }, content) {
+  constructor({ subject, recipients }, content, oneMail) {
     this.data = {
       from: "NO-REPLY <no-reply@myaddress.com>",
-      to: this.formatAddresses(recipients),
+      to: this.formatAddresses(recipients, oneMail),
       subject: subject,
       html: content,
     };
   }
 
-  formatAddresses(recipients) {
-    return recipients.map(({ email }) => email).join(",");
+  formatAddresses(recipients, oneMail) {
+    return oneMail || recipients.map(({ email }) => email).join(",");
   }
 
   async send() {
