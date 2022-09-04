@@ -18,7 +18,7 @@ mongoose
     useNewUrlParser: true,
   })
   .then(() => console.log("Database Connected"))
-  .catch((err) => console.log("ee", err, "eee"));
+  .catch((err) => console.log(err, "e"));
 
 const app = express();
 app.use(express.json());

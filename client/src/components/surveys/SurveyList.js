@@ -1,41 +1,17 @@
-// import * as React from "react";
-// import Box from "@mui/material/Box";
-// import Card from "@mui/material/Card";
-// import CardActions from "@mui/material/CardActions";
-// import CardContent from "@mui/material/CardContent";
-
-// const SurveyList = () => {
-//   React.useEffect(() => {
-//     document.title = `You clicked${survey.title} imes`;
-//   });
-//   return <div>i am list</div>;
-// };
-
-// export default SurveyList;
-
 import * as React from "react";
 import { Link, useParams } from "react-router-dom";
 import { connect } from "react-redux";
-import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
-// import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
-// import Collapse from "@mui/material/Collapse";
-// import Avatar from "@mui/material/Avatar";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-// import { red } from "@mui/material/colors";
-// import FavoriteIcon from "@mui/icons-material/Favorite";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import HowToVoteIcon from "@mui/icons-material/HowToVote";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
-// import ShareIcon from "@mui/icons-material/Share";
-// import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-// import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -43,26 +19,13 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import { reduxForm, Field } from "redux-form";
 import * as actions from "../../actions";
 import { flash } from "react-universal-flash";
 import dayjs from "dayjs";
 import axios from "axios";
-
-// interface ExpandMoreProps extends IconButtonProps {
-//   expand: boolean;
-// }
-
-// const ExpandMore = styled((props: ExpandMoreProps) => {
-//   const { expand, ...other } = props;
-//   return <IconButton {...other} />;
-// })(({ theme, expand }) => ({
-//   transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-//   marginLeft: "auto",
-//   transition: theme.transitions.create("transform", {
-//     duration: theme.transitions.duration.shortest
-//   })
-// }));
 
 const TextFieldAdapter = ({ input, meta, ...rest }) => (
   <TextField
@@ -74,17 +37,13 @@ const TextFieldAdapter = ({ input, meta, ...rest }) => (
   />
 );
 
-const SurveyList = ({
-  fetchSurveys,
-  surveys,
-  auth,
-  form,
-  handleSubmit,
-  submitting,
-}) => {
-  const { userId } = useParams(); //userId
+const SurveyList = (props) => {
+  const { fetchSurveys, surveys, auth, form, handleSubmit, submitting } = props;
 
+  const { userId } = useParams(); //userId
   const [bin, setBin] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [curSurvey, setCurSurvey] = React.useState({});
 
   async function fetchData() {
     await fetchSurveys(userId);
@@ -100,12 +59,9 @@ const SurveyList = ({
     }
   };
 
-  const [expanded, setExpanded] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
-  const [curSurvey, setCurSurvey] = React.useState("");
   const handleClickOpen = (survey) => {
-    const { _user, _id } = survey;
-    setCurSurvey(_id);
+    const { _id, subject } = survey;
+    setCurSurvey({ _id, subject });
     setOpen(true);
   };
   const handleClose = () => {
@@ -116,38 +72,30 @@ const SurveyList = ({
     try {
       if (form.emailForm.values) {
         await axios.post("/api/surveys/vote", {
-          curSurvey,
+          _id: curSurvey._id,
           ...form.emailForm.values,
         });
         flash("success submit", 2400, "success");
       }
     } catch (e) {
-      flash(" failure submit", 2400, "error");
+      flash(" failure submit" + e, 2400, "error");
     } finally {
     }
     console.log(form.emailForm.values);
   };
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
 
   React.useEffect(() => {
     fetchData();
-    console.log(auth);
   }, [userId, bin]);
 
   return (
     <>
-      <div className="grid grid-rows-1 gap-1 mt-3">
+      <Stack spacing={2} sx={{ mt: 2 }} alignItems="center" direction="column">
         {surveys
           .sort((a, b) => dayjs(b.dateSent).diff(a.dateSent))
           .map((survey) => {
             return (
-              <Card
-                className="mx-auto"
-                sx={{ width: 545 }}
-                key={survey.subject}
-              >
+              <Card sx={{ width: 545 }} key={survey.subject}>
                 <CardHeader
                   title={survey.subject}
                   subheader={dayjs(survey.dateSent).format("MMMM D, YYYY")}
@@ -159,12 +107,12 @@ const SurveyList = ({
                   </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
-                  <div className="text-blue-700">
+                  <Box sx={{ color: "#1D4ED8" }}>
                     <ThumbUpAltIcon />
                     <a>{survey.yes}</a>
                     <ThumbDownOffAltIcon />
                     <a>{survey.no}</a>
-                  </div>
+                  </Box>
                   {auth._id === survey._user && (
                     <Tooltip title="Delete">
                       <IconButton
@@ -193,24 +141,16 @@ const SurveyList = ({
               </Card>
             );
           })}
-      </div>
+      </Stack>
       <Dialog open={open} onClose={handleClose}>
         <form onSubmit={handleSubmit(onEmailSubmit)}>
-          <DialogTitle>Vote</DialogTitle>
+          <DialogTitle>Vote({curSurvey.subject})</DialogTitle>
           <DialogContent>
             <DialogContentText>
               To vote to this survey, please enter your email address here. We
               will send a voting email to you.
             </DialogContentText>
-            {/* <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Email Address"
-              type="email"
-              fullWidth
-              variant="standard"
-            /> */}
+
             <Field
               autoFocus
               name="email"
@@ -238,8 +178,6 @@ const SurveyList = ({
 function mapStateToProps({ surveys, auth, form }) {
   return { surveys, auth, form };
 }
-
-// export default connect(mapStateToProps, actions)(SurveyList);
 
 export default reduxForm({
   form: "emailForm",

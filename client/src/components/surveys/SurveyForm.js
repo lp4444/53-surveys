@@ -2,8 +2,9 @@ import * as React from "react";
 import { reduxForm, Field } from "redux-form";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-
+import Stack from "@mui/material/Stack";
 import validateEmails from "../../utils/validateEmails";
+import Box from "@mui/material/Box";
 
 const TextFieldAdapter = ({ input, meta, ...rest }) => (
   <TextField
@@ -14,53 +15,47 @@ const TextFieldAdapter = ({ input, meta, ...rest }) => (
     onChange={(event, value) => input.onChange(event.target.value)}
   />
 );
-
 const required = (value) => (value ? undefined : "Required");
 
 const SurveyForm = (props) => {
   const { onSurveySubmit, handleSubmit, pristine, reset, submitting } = props;
   return (
-    <div className="mx-1">
+    <Box sx={{ px: 1 }}>
       <form onSubmit={handleSubmit(onSurveySubmit)}>
-        <div>
-          <Field
-            name="subject"
-            label="survey title"
-            multiline
-            variant="standard"
-            margin="normal"
-            fullWidth
-            component={TextFieldAdapter}
-            validate={required}
-          />
-        </div>
-        <div>
-          <Field
-            name="body"
-            label="survey body"
-            multiline
-            minRows={2}
-            variant="standard"
-            margin="normal"
-            fullWidth
-            component={TextFieldAdapter}
-            validate={required}
-          />
-        </div>
-        <div>
-          <Field
-            name="recipients"
-            label="recipient list (email)"
-            multiline
-            minRows={2}
-            variant="standard"
-            margin="normal"
-            fullWidth
-            component={TextFieldAdapter}
-            validate={validateEmails}
-          />
-        </div>
-        <div className="flex gap-2">
+        <Field
+          name="subject"
+          label="survey title"
+          multiline
+          variant="standard"
+          margin="normal"
+          fullWidth
+          component={TextFieldAdapter}
+          validate={required}
+        />
+        <Field
+          name="body"
+          label="survey body"
+          multiline
+          minRows={2}
+          variant="standard"
+          margin="normal"
+          fullWidth
+          component={TextFieldAdapter}
+          validate={required}
+        />
+        <Field
+          name="recipients"
+          label="recipient list (email)"
+          multiline
+          minRows={2}
+          variant="standard"
+          margin="normal"
+          fullWidth
+          component={TextFieldAdapter}
+          validate={validateEmails}
+        />
+
+        <Stack spacing={1} direction="row">
           <Button
             type="submit"
             variant="contained"
@@ -69,7 +64,6 @@ const SurveyForm = (props) => {
           >
             Submit
           </Button>
-
           <Button
             type="button"
             variant="outlined"
@@ -79,9 +73,9 @@ const SurveyForm = (props) => {
           >
             Reset
           </Button>
-        </div>
+        </Stack>
       </form>
-    </div>
+    </Box>
   );
 };
 

@@ -9,7 +9,7 @@ const mailgun = require("mailgun-js")({
 class Mailer {
   constructor({ subject, recipients }, content, oneMail) {
     this.data = {
-      from: "NO-REPLY <no-reply@myaddress.com>",
+      from: "NO-REPLY <no-reply@survey-easy53.com>",
       to: this.formatAddresses(recipients, oneMail),
       subject: subject,
       html: content,

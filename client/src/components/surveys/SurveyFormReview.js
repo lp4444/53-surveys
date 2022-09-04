@@ -1,28 +1,30 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import * as actions from "../../actions";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
+import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
 import { flash } from "react-universal-flash";
 import axios from "axios";
 
 const sendSurvey = async (values, navigate) => {
   try {
     await axios.post("/api/surveys", values);
-    flash("success add", 2400, "success");
+    flash("successful add", 2400, "success");
   } catch (e) {
+    flash("error:" + e, 2400, "error");
   } finally {
     navigate("/surveys");
   }
 };
 const SurveyFormReview = ({ formValues, onCancel }) => {
   let navigate = useNavigate();
-  React.useEffect(() => {}, []);
+
   const ReviewContents = () => {
     return (
       <List
@@ -59,9 +61,9 @@ const SurveyFormReview = ({ formValues, onCancel }) => {
   };
 
   return (
-    <div className=" mx-auto px-1 pt-3">
+    <Box sx={{ px: 1, pt: 2 }}>
       <ReviewContents />
-      <div className="flex gap-2">
+      <Stack spacing={1} direction="row">
         <Button variant="outlined" color="secondary" onClick={onCancel}>
           Back
         </Button>
@@ -73,8 +75,8 @@ const SurveyFormReview = ({ formValues, onCancel }) => {
         >
           Send
         </Button>
-      </div>
-    </div>
+      </Stack>
+    </Box>
   );
 };
 
@@ -82,4 +84,4 @@ function mapStateToProps(state) {
   return { formValues: state.form.surveyForm.values };
 }
 
-export default connect(mapStateToProps, actions)(SurveyFormReview);
+export default connect(mapStateToProps, null)(SurveyFormReview);

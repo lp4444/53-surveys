@@ -37,7 +37,6 @@ router.post("/api/surveys", requireLogin, async (req, res) => {
 
   // Great place to send an email!
   const mailer = new Mailer(survey, mailTemplate(survey));
-
   try {
     if (recipients) await mailer.send();
     await survey.save();

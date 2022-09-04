@@ -13,10 +13,10 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import PollIcon from "@mui/icons-material/Poll";
 import { connect } from "react-redux";
 import { useNavigate, NavLink } from "react-router-dom";
 import { Link } from "@mui/material";
-import axios from "axios";
 
 const settings = [{ text: "Logout", path: "/api/logout" }];
 
@@ -46,14 +46,12 @@ const Header = ({ auth }) => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  React.useEffect(() => {
-    // console.log(auth, "s");
-  }, []);
+  React.useEffect(() => {}, []);
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <PollIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -69,7 +67,7 @@ const Header = ({ auth }) => {
               textDecoration: "none",
             }}
           >
-            LOGO2
+            Survey-easy
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -114,7 +112,7 @@ const Header = ({ auth }) => {
               )}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <PollIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -131,7 +129,7 @@ const Header = ({ auth }) => {
               textDecoration: "none",
             }}
           >
-            LOGO1
+            Survey-easy
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map(

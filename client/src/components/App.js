@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { connect } from "react-redux";
-import axios from "axios";
-import * as actions from "../actions";
 import { Flasher } from "react-universal-flash";
+import * as actions from "../actions";
 import Message from "./Message";
 import Header from "./Header";
 import Contents from "./Contents";
@@ -19,7 +18,7 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <>
         <BrowserRouter>
           <Header />
           <Routes>
@@ -31,7 +30,7 @@ class App extends Component {
         <Flasher>
           <Message />
         </Flasher>
-      </div>
+      </>
     );
   }
 }
