@@ -46,10 +46,10 @@ router.post("/api/surveys", requireLogin, async (req, res) => {
   }
 });
 router.post("/api/surveys/vote", async (req, res) => {
-  const { email, curSurvey: surveyId } = req.body;
+  const { email, _id } = req.body;
   Survey.updateOne(
     {
-      _id: surveyId,
+      _id,
       "recipients.email": { $ne: email },
     },
     {
@@ -57,7 +57,7 @@ router.post("/api/surveys/vote", async (req, res) => {
     }
   ).exec();
 
-  Survey.findById(surveyId, async function (err, docs) {
+  Survey.findById(_id, async function (err, docs) {
     if (err) {
       res.status(422).send(err);
     } else {
