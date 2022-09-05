@@ -90,58 +90,72 @@ const SurveyList = (props) => {
 
   return (
     <>
-      <Stack spacing={2} sx={{ mt: 2 }} alignItems="center" direction="column">
-        {surveys
-          .sort((a, b) => dayjs(b.dateSent).diff(a.dateSent))
-          .map((survey) => {
-            return (
-              <Card sx={{ width: 545 }} key={survey.subject}>
-                <CardHeader
-                  title={survey.subject}
-                  subheader={dayjs(survey.dateSent).format("MMMM D, YYYY")}
-                />
+      {surveys.length ? (
+        <Stack
+          spacing={2}
+          sx={{ mt: 2 }}
+          alignItems="center"
+          direction="column"
+        >
+          {surveys
+            .sort((a, b) => dayjs(b.dateSent).diff(a.dateSent))
+            .map((survey) => {
+              return (
+                <Card
+                  sx={{ maxWidth: 545, width: "100%" }}
+                  key={survey.subject}
+                >
+                  <CardHeader
+                    title={survey.subject}
+                    subheader={dayjs(survey.dateSent).format("MMMM D, YYYY")}
+                  />
 
-                <CardContent>
-                  <Typography variant="body2" color="text.secondary">
-                    {survey.body}
-                  </Typography>
-                </CardContent>
-                <CardActions disableSpacing>
-                  <Box sx={{ color: "#1D4ED8" }}>
-                    <ThumbUpAltIcon />
-                    <a>{survey.yes}</a>
-                    <ThumbDownOffAltIcon />
-                    <a>{survey.no}</a>
-                  </Box>
-                  {auth._id === survey._user && (
-                    <Tooltip title="Delete">
+                  <CardContent>
+                    <Typography variant="body2" color="text.secondary">
+                      {survey.body}
+                    </Typography>
+                  </CardContent>
+                  <CardActions disableSpacing>
+                    <Box sx={{ color: "#1D4ED8" }}>
+                      <ThumbUpAltIcon />
+                      <a>{survey.yes}</a>
+                      <ThumbDownOffAltIcon />
+                      <a>{survey.no}</a>
+                    </Box>
+                    {auth._id === survey._user && (
+                      <Tooltip title="Delete">
+                        <IconButton
+                          style={{ marginLeft: "auto" }}
+                          color="error"
+                          aria-label="delete"
+                          onClick={() => deleteSurvey(survey)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
+                    )}
+                    <Tooltip title="Vote">
                       <IconButton
-                        style={{ marginLeft: "auto" }}
-                        color="error"
-                        aria-label="delete"
-                        onClick={() => deleteSurvey(survey)}
+                        style={{
+                          marginLeft: auth._id !== survey._user && "auto",
+                        }}
+                        color="success"
+                        aria-label="Vote"
+                        onClick={() => handleClickOpen(survey)}
                       >
-                        <DeleteIcon />
+                        <HowToVoteIcon />
                       </IconButton>
                     </Tooltip>
-                  )}
-                  <Tooltip title="Vote">
-                    <IconButton
-                      style={{
-                        marginLeft: auth._id !== survey._user && "auto",
-                      }}
-                      color="success"
-                      aria-label="Vote"
-                      onClick={() => handleClickOpen(survey)}
-                    >
-                      <HowToVoteIcon />
-                    </IconButton>
-                  </Tooltip>
-                </CardActions>
-              </Card>
-            );
-          })}
-      </Stack>
+                  </CardActions>
+                </Card>
+              );
+            })}
+        </Stack>
+      ) : (
+        <Typography sx={{ mt: 1 }} align="center" variant="h2" component="h2">
+          No Content
+        </Typography>
+      )}
       <Dialog open={open} onClose={handleClose}>
         <form onSubmit={handleSubmit(onEmailSubmit)}>
           <DialogTitle>Vote({curSurvey.subject})</DialogTitle>

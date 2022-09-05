@@ -5,15 +5,12 @@ const router = express.Router();
 const requireLogin = require("../middlewares/requireLogin");
 const Mailer = require("../mail/Mailer");
 const Survey = mongoose.model("surveys");
-
+const User = mongoose.model("users");
 const mailTemplate = require("../mail/mailTemplate");
 
 router.get("/api/surveys", async (req, res) => {
   const filter = req.query.userId ? { _user: req.query.userId } : {};
   const surveys = await Survey.find(filter);
-  // .select({
-  //   recipients: false,
-  // });
 
   res.send(surveys);
 });
@@ -35,8 +32,7 @@ router.post("/api/surveys", requireLogin, async (req, res) => {
     dateSent: Date.now(),
   });
 
-  // Great place to send an email!
-  const mailer = new Mailer(survey, mailTemplate(survey));
+  const mailer = new Mailer(survey, mailTemplate(survey, req.user.email));
   try {
     if (recipients) await mailer.send();
     await survey.save();
@@ -62,7 +58,13 @@ router.post("/api/surveys/vote", async (req, res) => {
       res.status(422).send(err);
     } else {
       console.log("Result : ", docs);
-      const mailer = new Mailer(docs, mailTemplate(docs), email);
+      const surveyUser = await User.findById(docs._user);
+
+      const mailer = new Mailer(
+        docs,
+        mailTemplate(docs, surveyUser?.email),
+        email
+      );
       if (email) await mailer.send();
       res.send("ok");
     }

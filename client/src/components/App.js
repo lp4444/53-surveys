@@ -5,6 +5,7 @@ import { Flasher } from "react-universal-flash";
 import * as actions from "../actions";
 import Message from "./Message";
 import Header from "./Header";
+import Introduction from "./Introduction";
 import Contents from "./Contents";
 import SurveyNew from "./surveys/SurveyNew";
 
@@ -25,6 +26,7 @@ class App extends Component {
             <Route path="/surveys/new" element={<SurveyNew />} />
             <Route path="/surveys/:userId" element={<Contents />} />
             <Route path="/surveys/" element={<Contents />} />
+            <Route path="/" element={<Introduction />} />
           </Routes>
         </BrowserRouter>
         <Flasher>
