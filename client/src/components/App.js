@@ -5,9 +5,9 @@ import { Flasher } from "react-universal-flash";
 import * as actions from "../actions";
 import Message from "./Message";
 import Header from "./Header";
-import Introduction from "./Introduction";
 import Contents from "./Contents";
 import SurveyNew from "./surveys/SurveyNew";
+import Introduction from "./Introduction";
 
 class App extends Component {
   constructor(props) {
@@ -23,10 +23,10 @@ class App extends Component {
         <BrowserRouter>
           <Header />
           <Routes>
+            <Route path="/" element={<Introduction />} />
             <Route path="/surveys/new" element={<SurveyNew />} />
             <Route path="/surveys/:userId" element={<Contents />} />
             <Route path="/surveys/" element={<Contents />} />
-            <Route path="/" element={<Introduction />} />
           </Routes>
         </BrowserRouter>
         <Flasher>

@@ -13,7 +13,7 @@ const Contents = () => {
             fontSize: 48,
             color: "#2590EB",
             position: "fixed",
-            right: 8,
+            left: 8,
             bottom: 4,
             zIndex: 10,
           }}

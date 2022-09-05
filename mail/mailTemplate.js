@@ -5,7 +5,7 @@ module.exports = (survey, email) => {
     <html>
       <body>
         <div style="text-align: center;">
-          <h2>This is the survey from https://survey-easy.herokuapp.com/<h2/>
+          <h2>This survey is from https://survey-easy.herokuapp.com/<h2/>
           <p>The author ${
             email || "no-reply@survey-easy53.com"
           } like your input!</p>
