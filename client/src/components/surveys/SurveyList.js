@@ -75,7 +75,7 @@ const SurveyList = (props) => {
           _id: curSurvey._id,
           ...form.emailForm.values,
         });
-        flash("success submit", 2400, "success");
+        flash("successful submit, please check your email", 2400, "success");
       }
     } catch (e) {
       flash(" failure submit" + e, 2400, "error");

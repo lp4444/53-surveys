@@ -29,7 +29,7 @@ class App extends Component {
             <Route path="/surveys/" element={<Contents />} />
           </Routes>
         </BrowserRouter>
-        <Flasher>
+        <Flasher position="bottom_right">
           <Message />
         </Flasher>
       </>
