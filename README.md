@@ -9,4 +9,4 @@
 
 ![alt text](./survey-easy.jpg)
 
-[a link](https://survey-easy.herokuapp.com/)
+[Survey-easy website](https://survey-easy.herokuapp.com/)
